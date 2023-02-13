@@ -1,10 +1,10 @@
 import os
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@d1q60g8_v&ci$0e8d=v83$846ppq@zwv(pzk%aow8r^ns%r_)'
+SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = True
 
