@@ -1,24 +1,10 @@
 from django.db import models
-from mptt.fields import TreeForeignKey
-from mptt.models import MPTTModel
+from mptt import fields as mpttfields
+from mptt import models as mpttmodel
+from orders.common.models import AuditInfoMixin
 
 
-class AuditInfoMixin(models.Model):
-    created_on = models.DateField(
-        auto_now_add=True,
-        verbose_name='Дата на създаване'
-    )
-
-    updated_on = models.DateTimeField(
-        auto_now=True,
-        verbose_name='Последна модификация'
-    )
-
-    class Meta:
-        abstract = True
-
-
-class Category(AuditInfoMixin, MPTTModel):
+class Category(AuditInfoMixin, mpttmodel.MPTTModel):
     TITLE_MAX_LENGTH = 30
 
     title = models.CharField(
@@ -27,7 +13,7 @@ class Category(AuditInfoMixin, MPTTModel):
         blank=False,
     )
 
-    parent = TreeForeignKey(
+    parent = mpttfields.TreeForeignKey(
         'self',
         on_delete=models.RESTRICT,
         related_name='child',
@@ -37,6 +23,35 @@ class Category(AuditInfoMixin, MPTTModel):
 
     is_active = models.BooleanField(
         default=True,
+        null=False,
+        blank=False,
+    )
+
+
+class Product(models.Model):
+    TITLE_MAX_LENGTH = 30
+
+    title = models.CharField(
+        max_length=TITLE_MAX_LENGTH,
+        verbose_name='Име',
+        null=False,
+        blank=False,
+    )
+
+    quantity = models.PositiveIntegerField(
+        verbose_name='Количество',
+        null=False,
+        blank=False,
+    )
+
+    multiple_amount = models.PositiveIntegerField(
+        verbose_name='Кратно количество',
+        null=False,
+        blank=False,
+    )
+
+    image = models.ImageField(
+        upload_to='product/',
         null=False,
         blank=False,
     )
