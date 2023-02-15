@@ -12,13 +12,6 @@ class Town(AuditInfoMixin, models.Model):
         blank=False,
     )
 
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name='Активен',
-        null=True,
-        blank=True,
-    )
-
     class Meta:
         verbose_name = "Град"
         verbose_name_plural = "Градове"
@@ -54,6 +47,12 @@ class Product(AuditInfoMixin, models.Model):
 
     multiple_amount = models.PositiveIntegerField(
         verbose_name='Кратно количество',
+        null=False,
+        blank=False,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
         null=False,
         blank=False,
     )
